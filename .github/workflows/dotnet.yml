@@ -1,10 +1,15 @@
 name: .NET
 
-on: [pull_request]
+on:  
+  push:
+    branches: [ master ]
 
 jobs:
   build:
 
+    env:
+      GitHubPackageFeedUrl: https://nuget.pkg.github.com/(your-organisation-name)/index.json
+      LogicProjectPath: ${{ github.WORKSPACE }}/AnimalAdoption.Common.Logic
     runs-on: ubuntu-latest
 
     steps:
@@ -19,10 +24,44 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 3.1.x
+        source-url: ${{ env.GitHubPackageFeedUrl }}
+      env:
+        NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub automatically creates a GITHUB_TOKEN secret to use in your workflow
+        
+    - name: Package up project
+      run: dotnet pack --configuration Release ${{ env.LogicProjectPath }}
+
+    - name: Push package to GitHub registry
+      run: dotnet nuget push ${{ env.LogicProjectPath }}/**/*.nupkg --skip-duplicate
+        
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --filter FullyQualifiedName\!~FunctionalTests
+      
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    if: true
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v2
+      with:
+        name: artifact
+        
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'ChallengeWeb'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.test}}
+        package: .
+
