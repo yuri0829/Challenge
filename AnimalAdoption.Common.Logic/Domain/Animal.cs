@@ -9,4 +9,5 @@ namespace AnimalAdoption.Common.Logic
         public string Description { get; set; }
         public int Age { get; set; }
     }
+
 }

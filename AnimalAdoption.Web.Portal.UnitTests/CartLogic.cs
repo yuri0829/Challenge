@@ -33,5 +33,7 @@ namespace AnimalAdoption.Service.Cart.UnitTests
             Assert.Equal("TEST_CART", resultingCart.Id);
             Assert.Equal(0, resultingCart.CartContents.First(x => x.Id == animalId).Quantity);
         }
+
+
     }
 }

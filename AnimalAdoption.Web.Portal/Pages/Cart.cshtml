@@ -18,18 +18,25 @@
             </tr>
         </thead>
         <tbody>
+           
             @{ if (Model.Cart?.CartContents != null)
                     foreach (var animal in Model.Cart.CartContents)
                     {
+                        
                         <tr key=@animal.Id>
                             <td>@animal.Id</td>
                             <td>@animal.Name</td>
                             <td>@animal.Quantity</td>
+      
                             <td><button asp-route-id="@animal.Id" name="quantity" value="@(animal.Quantity + 1)">+</button></td>
                             <td><button asp-route-id="@animal.Id" name="quantity" value="@(animal.Quantity - 1)">-</button></td>
                         </tr>
                     }
             }
+
         </tbody>
+
+   
+       
     </table>
 </form>

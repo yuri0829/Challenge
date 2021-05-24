@@ -1,9 +1,29 @@
+using AnimalAdoption.Service.Cart.UnitTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
+
+namespace AnimalAdoption.Service.Cart.UnitTests.Tests
+{
+    [TestClass()]
+    public class ChromeDriverTest
+    {
+        [TestMethod()]
+        public void CartManagement_EmptyCartAddAnimal_AnAnimalIsAddedTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void CartManagement_EmptyCartAddNegativeAnimal_AnAnimalDoesNotGoIntoNegativeTest()
+        {
+            Assert.Fail();
+        }
+    }
+}
 
 namespace AnimalAdoption.Web.Portal.FunctionalTests
 {
